@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Free Fire Products - Top Up Game</title>
+    <!-- Fonts & Icons -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        /* Root Variables */
+        :root {
+            --primary: #FF5733;
+            --primary-dark: #C70039;
+            --success: #28A745;
+            --danger: #DC3545;
+            --gray: #6C757D;
+            --white: #FFFFFF;
+            --shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background: #F8F9FA;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
+            color: white;
+            text-align: center;
+            padding: 30px 0;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+        }
+
+        header .logo {
+            font-size: 2rem;
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        header .tagline {
+            font-size: 1rem;
+            opacity: 0.9;
+            margin-top: 10px;
+        }
+
+        /* Dashboard Section */
+        .dashboard {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin: 20px 0;
+        }
+
+        .stats-card {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: var(--shadow);
+            text-align: center;
+        }
+
+        .stats-card h3 {
+            font-size: 1rem;
+            color: var(--gray);
+            margin-bottom: 10px;
+        }
+
+        .stats-card p {
+            font-size: 1.5rem;
+            font-weight: 600;
+            color: var(--primary);
+        }
+
+        /* Products Section */
+        .products-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .search-box {
+            position: relative;
+            width: 300px;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 10px 15px;
+            border: 1px solid #ddd;
+            border-radius: 25px;
+            font-size: 1rem;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--gray);
+        }
+
+        .products-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+
+        .product-card {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            box-shadow: var(--shadow);
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .product-badge {
+            background: var(--success);
+            color: white;
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .product-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 10px;
+        }
+
+        .product-price {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+
+        .product-meta {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 10px;
+        }
+
+        .product-code {
+            background: #e9ecef;
+            color: var(--dark);
+            padding: 5px 10px;
+            border-radius: 5px;
+            font-size: 0.9rem;
+        }
+
+        .product-status {
+            display: flex;
+            align-items: center;
+            gap: 5px;
+            font-size: 0.9rem;
+        }
+
+        .order-btn {
+            display: block;
+            width: 100%;
+            padding: 10px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            margin-top: 15px;
+            transition: background 0.3s ease;
+        }
+
+        .order-btn:hover {
+            background: var(--primary-dark);
+        }
+
+        /* Modal Styles */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .modal-content {
+            background: white;
+            border-radius: 10px;
+            padding: 30px;
+            width: 100%;
+            max-width: 500px;
+            box-shadow: var(--shadow);
+            position: relative;
+            animation: fadeIn 0.3s ease-out;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .modal-header h2 {
+            font-size: 1.5rem;
+            font-weight: 600;
+        }
+
+        .close-modal {
+            font-size: 1.5rem;
+            color: var(--gray);
+            cursor: pointer;
+            transition: color 0.3s ease;
+        }
+
+        .close-modal:hover {
+            color: var(--primary);
+        }
+
+        .modal-body {
+            margin-bottom: 20px;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 1rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 10px 15px;
+            background: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background 0.3s ease;
+        }
+
+        .btn:hover {
+            background: var(--primary-dark);
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 20px 0;
+            color: var(--gray);
+            font-size: 0.9rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-gamepad"></i> Free Fire Products
+            </div>
+            <p class="tagline">Top up your Free Fire account with the best rates and fastest processing</p>
+        </header>
+
+        <div class="dashboard">
+            <div class="stats-card">
+                <h3>Products Available</h3>
+                <p id="total-products">0</p>
+            </div>
+            <div class="stats-card">
+                <h3>Active Products</h3>
+                <p id="active-products">0</p>
+            </div>
+            <div class="stats-card">
+                <h3>Lowest Price</h3>
+                <p id="lowest-price">Rp 0</p>
+            </div>
+        </div>
+
+        <div class="products-section">
+            <div class="products-header">
+                <h2>Available Products</h2>
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchInput" placeholder="Search products...">
+                </div>
+            </div>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be dynamically rendered here -->
+            </div>
+        </div>
+
+        <!-- Modal -->
+        <div class="modal" id="orderModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Order Product</h2>
+                    <span class="close-modal" id="closeModal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="selectedProductInfo"></div>
+                    <form id="targetForm">
+                        <div class="form-group">
+                            <label for="target">Target Free Fire ID</label>
+                            <input type="text" id="target" class="form-control" placeholder="Enter Free Fire ID" required>
+                        </div>
+                        <button type="submit" class="btn">Proceed to Payment</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+        <!-- Payment Modal -->
+        <div class="modal" id="paymentModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Payment</h2>
+                    <span class="close-modal" id="closePaymentModal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <div id="qrContainer">
+                        <img id="qrImage" src="" alt="QR Code" style="width: 100%; max-width: 300px; margin: 0 auto;">
+                        <p id="paymentDetails"></p>
+                    </div>
+                    <div id="paymentStatus"></div>
+                    <button class="btn btn-danger" id="cancelPaymentBtn">Cancel Payment</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Order Success Modal -->
+        <div class="modal" id="successModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h2>Order Successful!</h2>
+                    <span class="close-modal" id="closeSuccessModal">&times;</span>
+                </div>
+                <div class="modal-body">
+                    <p>Your order has been processed successfully.</p>
+                    <button class="btn" id="backToProductsBtn">Back to Products</button>
+                </div>
+            </div>
+        </div>
+
+        <footer>
+            &copy; 2023 Free Fire Products. All rights reserved.
+        </footer>
+    </div>
+
+    <script>
+const _0x867ed0=_0x10df;(function(_0x5adebc,_0x31fb6d){const _0x590dc7=_0x10df,_0x29b188=_0x5adebc();while(!![]){try{const _0x3386c5=parseInt(_0x590dc7(0x165))/0x1+-parseInt(_0x590dc7(0x16c))/0x2+parseInt(_0x590dc7(0x1bc))/0x3*(parseInt(_0x590dc7(0x173))/0x4)+-parseInt(_0x590dc7(0x19d))/0x5*(parseInt(_0x590dc7(0x1a4))/0x6)+parseInt(_0x590dc7(0x1a2))/0x7+parseInt(_0x590dc7(0x1ad))/0x8*(parseInt(_0x590dc7(0x186))/0x9)+-parseInt(_0x590dc7(0x15b))/0xa*(parseInt(_0x590dc7(0x15a))/0xb);if(_0x3386c5===_0x31fb6d)break;else _0x29b188['push'](_0x29b188['shift']());}catch(_0x28809b){_0x29b188['push'](_0x29b188['shift']());}}}(_0x11c3,0xac0c1));function _0x10df(_0x698049,_0x2dda14){const _0x11c3d6=_0x11c3();return _0x10df=function(_0x10df20,_0x46973d){_0x10df20=_0x10df20-0x156;let _0xd65224=_0x11c3d6[_0x10df20];return _0xd65224;},_0x10df(_0x698049,_0x2dda14);}let allProducts=[],selectedProduct=null,depositId=null,orderId=null,checkStatusInterval=null;document[_0x867ed0(0x1b6)](_0x867ed0(0x1b9),async function(){const _0x8828e=_0x867ed0,_0x260b1a=await fetch(_0x8828e(0x19b)),_0x3d77e9=await _0x260b1a[_0x8828e(0x1a9)]();_0x3d77e9[_0x8828e(0x1a8)]?(allProducts=_0x3d77e9[_0x8828e(0x189)],renderProducts(allProducts),updateStats()):alert(_0x8828e(0x19f)+_0x3d77e9[_0x8828e(0x172)]),document['getElementById']('searchInput')[_0x8828e(0x1b6)](_0x8828e(0x194),function(_0x342def){const _0x413c14=_0x8828e,_0xe2ae17=_0x342def['target'][_0x413c14(0x1b7)][_0x413c14(0x18c)](),_0x3ade88=allProducts[_0x413c14(0x180)](_0x9f58b7=>_0x9f58b7[_0x413c14(0x183)]['toLowerCase']()['includes'](_0xe2ae17)||_0x9f58b7[_0x413c14(0x19e)]['toLowerCase']()[_0x413c14(0x185)](_0xe2ae17));renderProducts(_0x3ade88);}),document['getElementById'](_0x8828e(0x16d))[_0x8828e(0x1b6)](_0x8828e(0x196),function(){closeModal('orderModal');}),document['getElementById'](_0x8828e(0x198))[_0x8828e(0x1b6)](_0x8828e(0x196),function(){const _0x257196=_0x8828e;closeModal(_0x257196(0x17b));}),document['getElementById']('closeSuccessModal')[_0x8828e(0x1b6)]('click',function(){const _0x38564b=_0x8828e;closeModal(_0x38564b(0x1b8));}),document[_0x8828e(0x174)](_0x8828e(0x170))['addEventListener'](_0x8828e(0x196),function(){const _0xf1ffeb=_0x8828e;closeModal(_0xf1ffeb(0x1b8));}),document['getElementById']('targetForm')['addEventListener']('submit',function(_0xd3fbf9){const _0x344f83=_0x8828e;_0xd3fbf9[_0x344f83(0x156)](),proceedToPayment();}),document[_0x8828e(0x174)]('cancelPaymentBtn')['addEventListener']('click',function(){cancelPayment();});});function renderProducts(_0x1bf613){const _0x22e70d=_0x867ed0,_0x124954=document[_0x22e70d(0x174)](_0x22e70d(0x1a5));_0x124954[_0x22e70d(0x18d)]='',_0x1bf613[_0x22e70d(0x1ae)](_0x504e83=>{const _0x27dcfc=_0x22e70d,_0x34b883=_0x504e83[_0x27dcfc(0x158)]===_0x27dcfc(0x176),_0xf5ccc3=document[_0x27dcfc(0x160)](_0x27dcfc(0x1a1));_0xf5ccc3[_0x27dcfc(0x1b0)]=_0x27dcfc(0x18b)+(!_0x34b883?_0x27dcfc(0x16b):''),_0xf5ccc3['innerHTML']=_0x27dcfc(0x15d)+_0x504e83[_0x27dcfc(0x199)]+'\x20'+_0x504e83[_0x27dcfc(0x158)]+_0x27dcfc(0x19c)+(!_0x34b883?_0x27dcfc(0x159):'')+'\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h3\x20class=\x22product-name\x22>'+_0x504e83[_0x27dcfc(0x183)]+'</h3>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22product-price\x22>'+_0x504e83[_0x27dcfc(0x193)]+'</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22product-meta\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22product-code\x22>'+_0x504e83[_0x27dcfc(0x19e)]+_0x27dcfc(0x168)+(_0x34b883?_0x27dcfc(0x188):'fa-times-circle')+'\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20'+_0x504e83[_0x27dcfc(0x158)]+_0x27dcfc(0x16e)+(!_0x34b883?'disabled':'')+'\x22\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20data-code=\x22'+_0x504e83[_0x27dcfc(0x19e)]+_0x27dcfc(0x163)+(!_0x34b883?_0x27dcfc(0x177):'')+_0x27dcfc(0x17a)+(_0x34b883?_0x27dcfc(0x18f):_0x27dcfc(0x16f))+_0x27dcfc(0x167),_0x34b883&&_0xf5ccc3['querySelector'](_0x27dcfc(0x195))[_0x27dcfc(0x1b6)](_0x27dcfc(0x196),function(){const _0x145ae9=_0x27dcfc;showModal(_0x504e83[_0x145ae9(0x19e)]);}),_0x124954[_0x27dcfc(0x197)](_0xf5ccc3);});}function updateStats(){const _0x1aff5a=_0x867ed0;document[_0x1aff5a(0x174)](_0x1aff5a(0x1bd))[_0x1aff5a(0x1a7)]=allProducts[_0x1aff5a(0x17c)],document[_0x1aff5a(0x174)]('active-products')['textContent']=allProducts[_0x1aff5a(0x180)](_0x4692c9=>_0x4692c9[_0x1aff5a(0x158)]==='available')[_0x1aff5a(0x17c)];const _0x30b43b=allProducts[_0x1aff5a(0x1aa)]((_0x23b7c8,_0x11b702)=>_0x11b702[_0x1aff5a(0x15f)]<_0x23b7c8[_0x1aff5a(0x15f)]?_0x11b702:_0x23b7c8,allProducts[0x0]);document['getElementById'](_0x1aff5a(0x17e))[_0x1aff5a(0x1a7)]=_0x30b43b[_0x1aff5a(0x193)];}function showModal(_0x57a925){const _0x430fe6=_0x867ed0;selectedProduct=allProducts[_0x430fe6(0x1b2)](_0x3f1d58=>_0x3f1d58[_0x430fe6(0x19e)]===_0x57a925);if(!selectedProduct||selectedProduct['status']!==_0x430fe6(0x176))return;document[_0x430fe6(0x174)]('selectedProductInfo')['innerHTML']=_0x430fe6(0x1ba)+selectedProduct[_0x430fe6(0x183)]+_0x430fe6(0x18a)+selectedProduct[_0x430fe6(0x193)]+_0x430fe6(0x1b5)+selectedProduct[_0x430fe6(0x19e)]+_0x430fe6(0x17f)+selectedProduct['status']+_0x430fe6(0x1b3),document[_0x430fe6(0x174)]('target')[_0x430fe6(0x1b7)]='',openModal(_0x430fe6(0x19a));}function openModal(_0x3dfe87){const _0x360e5f=_0x867ed0;document[_0x360e5f(0x174)](_0x3dfe87)[_0x360e5f(0x1ac)][_0x360e5f(0x178)]=_0x360e5f(0x184);}function closeModal(_0x533c74){const _0x38ee11=_0x867ed0;document[_0x38ee11(0x174)](_0x533c74)[_0x38ee11(0x1ac)][_0x38ee11(0x178)]='none';}function _0x11c3(){const _0x16fe2d=['\x22\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','src','635869bhnTYD','error','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</button>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<span\x20class=\x22product-status\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','Payment\x20failed','product-unavailable','2054672qyvWer','closeModal','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</span>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<button\x20class=\x22order-btn\x20','Not\x20Available','backToProductsBtn','Please\x20enter\x20target\x20Free\x20Fire\x20ID','message','4766744MCdxOi','getElementById','Failed\x20to\x20cancel\x20payment','available','disabled','display','Error:','>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-shopping-cart\x22></i>\x20\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','paymentModal','length','Failed\x20to\x20connect\x20to\x20server','lowest-price','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Status:</strong>\x20','filter','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22status-failed\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-times-circle\x22></i>\x20Payment\x20expired\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','target','name','flex','includes','729PnrFRJ','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22status-failed\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-times-circle\x22></i>\x20Payment\x20canceled\x20by\x20user\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','fa-check-circle','data','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Price:</strong>\x20','product-card\x20','toLowerCase','innerHTML','toLocaleString','Order\x20Now','/api/deposit/cancel','POST','/api/order/status','price_formatted','input','.order-btn','click','appendChild','closePaymentModal','status_emoji','orderModal','/api/freefire','</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','1696990YKgTtz','code','Failed\x20to\x20load\x20products:\x20','failed','div','3847417ROyYYZ','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22status-success\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-check-circle\x22></i>\x20Payment\x20successful!\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','12MrqmbL','productsGrid','Payment\x20canceled','textContent','success','json','reduce','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Amount:</strong>\x20Rp\x20','style','71608ogxvnV','forEach','getTime','className','paymentStatus','find','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20','/api/deposit/create','</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Code:</strong>\x20','addEventListener','value','successModal','DOMContentLoaded','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<h3>Product\x20Details</h3>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Product:</strong>\x20','Error\x20checking\x20order\x20status:','3WUAvOq','total-products','expired_at','preventDefault','application/json','status','<div\x20class=\x22unavailable-badge\x22>Unavailable</div>','15180pAyAMQ','5010ItloGs','stringify','\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22product-badge\x22>','nominal','final_price','createElement','Order\x20failed','qrImage'];_0x11c3=function(){return _0x16fe2d;};return _0x11c3();}async function proceedToPayment(){const _0x52291=_0x867ed0,_0xe33548=document[_0x52291(0x174)](_0x52291(0x182))[_0x52291(0x1b7)];if(!_0xe33548){alert(_0x52291(0x171));return;}try{const _0xcc1486=await fetch(_0x52291(0x1b4),{'method':_0x52291(0x191),'headers':{'Content-Type':_0x52291(0x157)},'body':JSON[_0x52291(0x15c)]({'nominal':selectedProduct[_0x52291(0x15f)]})}),_0x1b2efa=await _0xcc1486[_0x52291(0x1a9)]();_0x1b2efa[_0x52291(0x158)]?(depositId=_0x1b2efa[_0x52291(0x189)]['id'],showPaymentStep(_0x1b2efa[_0x52291(0x189)]),startPaymentStatusCheck(_0x1b2efa[_0x52291(0x189)]['id'])):alert(_0x1b2efa[_0x52291(0x172)]||_0x52291(0x16a));}catch(_0x2de99c){console[_0x52291(0x166)]('Error:',_0x2de99c),alert(_0x52291(0x17d));}}function showPaymentStep(_0x4e2a27){const _0x89daed=_0x867ed0;document[_0x89daed(0x174)](_0x89daed(0x162))[_0x89daed(0x164)]=_0x4e2a27['qr_image'],document[_0x89daed(0x174)]('paymentDetails')[_0x89daed(0x18d)]=_0x89daed(0x1ab)+_0x4e2a27[_0x89daed(0x15e)][_0x89daed(0x18e)]()+'</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<p><strong>Expires\x20at:</strong>\x20'+_0x4e2a27[_0x89daed(0x1be)]+'</p>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',document[_0x89daed(0x174)](_0x89daed(0x1b1))[_0x89daed(0x18d)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22loading\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-spinner\x20fa-spin\x22></i>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20Waiting\x20for\x20payment...\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20</div>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20',closeModal('orderModal'),openModal(_0x89daed(0x17b));const _0x296c14=new Date(_0x4e2a27[_0x89daed(0x1be)])[_0x89daed(0x1af)]();setTimeout(()=>{const _0x2e66ea=_0x89daed;clearInterval(checkStatusInterval),document[_0x2e66ea(0x174)]('paymentStatus')[_0x2e66ea(0x18d)]=_0x2e66ea(0x181);},0xa*0x3c*0x3e8);}function startPaymentStatusCheck(_0x200d2a){checkStatusInterval=setInterval(async()=>{const _0x3a298a=_0x10df;try{const _0x117c63=await fetch('/api/deposit/status',{'method':'POST','headers':{'Content-Type':_0x3a298a(0x157)},'body':JSON[_0x3a298a(0x15c)]({'id':_0x200d2a})}),_0x10c0ff=await _0x117c63['json']();if(_0x10c0ff[_0x3a298a(0x158)]){const _0x4b5b77=_0x10c0ff[_0x3a298a(0x189)][_0x3a298a(0x158)][_0x3a298a(0x18c)]();if(_0x4b5b77===_0x3a298a(0x1a8))clearInterval(checkStatusInterval),document['getElementById'](_0x3a298a(0x1b1))[_0x3a298a(0x18d)]=_0x3a298a(0x1a3),processOrder();else(_0x4b5b77===_0x3a298a(0x1a0)||_0x4b5b77==='cancel')&&(clearInterval(checkStatusInterval),document['getElementById'](_0x3a298a(0x1b1))[_0x3a298a(0x18d)]='\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<div\x20class=\x22status-failed\x22>\x0a\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20\x20<i\x20class=\x22fas\x20fa-times-circle\x22></i>\x20'+(_0x4b5b77===_0x3a298a(0x1a0)?_0x3a298a(0x16a):_0x3a298a(0x1a6))+_0x3a298a(0x169));}}catch(_0x5048bf){console['error']('Error\x20checking\x20payment\x20status:',_0x5048bf);}},0x1388);}async function cancelPayment(){const _0x4388ef=_0x867ed0;if(!depositId)return;try{const _0x1076d7=await fetch(_0x4388ef(0x190),{'method':_0x4388ef(0x191),'headers':{'Content-Type':_0x4388ef(0x157)},'body':JSON[_0x4388ef(0x15c)]({'id':depositId})}),_0x27029c=await _0x1076d7[_0x4388ef(0x1a9)]();_0x27029c[_0x4388ef(0x158)]?(clearInterval(checkStatusInterval),document[_0x4388ef(0x174)](_0x4388ef(0x1b1))[_0x4388ef(0x18d)]=_0x4388ef(0x187)):alert(_0x27029c[_0x4388ef(0x172)]||_0x4388ef(0x175));}catch(_0x313e44){console[_0x4388ef(0x166)]('Error:',_0x313e44),alert(_0x4388ef(0x17d));}}async function processOrder(){const _0x2d98f8=_0x867ed0;try{const _0x336cb1=document['getElementById'](_0x2d98f8(0x182))[_0x2d98f8(0x1b7)],_0x3e589d=await fetch('/api/order/create',{'method':_0x2d98f8(0x191),'headers':{'Content-Type':'application/json'},'body':JSON[_0x2d98f8(0x15c)]({'code':selectedProduct[_0x2d98f8(0x19e)],'target':_0x336cb1})}),_0x401f7c=await _0x3e589d['json']();_0x401f7c[_0x2d98f8(0x158)]?(orderId=_0x401f7c[_0x2d98f8(0x189)]['id'],startOrderStatusCheck(_0x401f7c[_0x2d98f8(0x189)]['id'])):alert(_0x401f7c['message']||_0x2d98f8(0x161));}catch(_0x43c04f){console['error'](_0x2d98f8(0x179),_0x43c04f),alert(_0x2d98f8(0x17d));}}function startOrderStatusCheck(_0x242f10){const _0x3c9e68=setInterval(async()=>{const _0x2c800d=_0x10df;try{const _0x44aa8f=await fetch(_0x2c800d(0x192),{'method':'POST','headers':{'Content-Type':_0x2c800d(0x157)},'body':JSON['stringify']({'id':_0x242f10})}),_0x3c9ee3=await _0x44aa8f[_0x2c800d(0x1a9)]();if(_0x3c9ee3[_0x2c800d(0x158)]){const _0x2944eb=_0x3c9ee3[_0x2c800d(0x189)][_0x2c800d(0x158)]['toLowerCase']();if(_0x2944eb===_0x2c800d(0x1a8))clearInterval(_0x3c9e68),closeModal(_0x2c800d(0x17b)),openModal(_0x2c800d(0x1b8));else _0x2944eb===_0x2c800d(0x1a0)&&(clearInterval(_0x3c9e68),alert(_0x2c800d(0x161)));}}catch(_0x135fc3){console[_0x2c800d(0x166)](_0x2c800d(0x1bb),_0x135fc3);}},0x1388);}
+    </script>
+</body>
+</html>
