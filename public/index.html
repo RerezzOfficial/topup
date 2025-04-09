@@ -1,0 +1,704 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TopUpNow | E-Wallet & Game Credits</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --primary-light: #a29bfe;
+            --primary-dark: #5649d1;
+            --secondary: #fd79a8;
+            --dark: #2d3436;
+            --dark-light: #636e72;
+            --light: #f5f6fa;
+            --success: #00b894;
+            --gradient: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+        }
+        
+        body {
+            font-family: 'Poppins', sans-serif;
+            background-color: var(--light);
+            color: var(--dark);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+        
+        .navbar {
+            transition: all 0.3s ease;
+            padding: 15px 0;
+        }
+        
+        .navbar.scrolled {
+            padding: 10px 0;
+            background-color: rgba(255, 255, 255, 0.98) !important;
+            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+        }
+        
+        .navbar-brand {
+            font-weight: 700;
+            color: var(--primary) !important;
+            font-size: 1.5rem;
+        }
+        
+        .nav-link {
+            font-weight: 500;
+            position: relative;
+            margin: 0 5px;
+        }
+        
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: var(--primary);
+            transition: width 0.3s ease;
+        }
+        
+        .nav-link:hover::after,
+        .nav-link.active::after {
+            width: 100%;
+        }
+        
+        .btn {
+            font-weight: 500;
+            padding: 0.6rem 1.5rem;
+            border-radius: 50px;
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary {
+            background-color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-primary:hover {
+            background-color: var(--primary-dark);
+            border-color: var(--primary-dark);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .btn-outline-primary {
+            color: var(--primary);
+            border-color: var(--primary);
+        }
+        
+        .btn-outline-primary:hover {
+            background-color: var(--primary);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(108, 92, 231, 0.3);
+        }
+        
+        .hero-section {
+            position: relative;
+            padding: 120px 0 100px;
+            overflow: hidden;
+            background: var(--gradient);
+            color: white;
+        }
+        
+        #mainCanvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            opacity: 0.5;
+        }
+        
+        .hero-content {
+            position: relative;
+            z-index: 1;
+        }
+        
+        .hero-content h1 {
+            font-weight: 700;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+            text-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        
+        .hero-content p {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            margin-bottom: 2rem;
+        }
+        
+        .hero-img {
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 20px 30px rgba(0, 0, 0, 0.2));
+        }
+        
+        @keyframes float {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-20px); }
+            100% { transform: translateY(0px); }
+        }
+        
+        .section-title {
+            position: relative;
+            display: inline-block;
+            margin-bottom: 1.5rem;
+        }
+        
+        .section-title::after {
+            content: '';
+            position: absolute;
+            width: 50%;
+            height: 4px;
+            bottom: -10px;
+            left: 25%;
+            background: var(--gradient);
+            border-radius: 2px;
+        }
+        
+        .service-card {
+            border: none;
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0, 1);
+            background: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+            padding: 2rem;
+            height: 100%;
+        }
+        
+        .service-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.1);
+        }
+        
+        .service-icon {
+            width: 70px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(108, 92, 231, 0.1);
+            border-radius: 50%;
+            margin: 0 auto 1.5rem;
+            font-size: 1.8rem;
+            color: var(--primary);
+            transition: all 0.3s ease;
+        }
+        
+        .service-card:hover .service-icon {
+            background: var(--primary);
+            color: white;
+            transform: scale(1.1);
+        }
+        
+        .game-card {
+            border-radius: 15px;
+            overflow: hidden;
+            transition: all 0.3s ease;
+            border: none;
+            background: white;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.05);
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.1);
+        }
+        
+        .game-img {
+            height: 120px;
+            object-fit: contain;
+            padding: 1rem;
+            transition: all 0.3s ease;
+        }
+        
+        .game-card:hover .game-img {
+            transform: scale(1.05);
+        }
+        
+        .cta-section {
+            position: relative;
+            overflow: hidden;
+            background: var(--gradient);
+            color: white;
+        }
+        
+        .cta-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.1;
+            background-image: radial-gradient(var(--light) 1px, transparent 1px);
+            background-size: 20px 20px;
+        }
+        
+        footer {
+            background-color: var(--dark);
+            color: white;
+            position: relative;
+        }
+        
+        .footer-links h5 {
+            position: relative;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+        
+        .footer-links h5::after {
+            content: '';
+            position: absolute;
+            width: 40px;
+            height: 3px;
+            bottom: 0;
+            left: 0;
+            background: var(--primary);
+        }
+        
+        .footer-links a {
+            color: rgba(255, 255, 255, 0.7);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            display: block;
+            margin-bottom: 10px;
+        }
+        
+        .footer-links a:hover {
+            color: white;
+            padding-left: 5px;
+        }
+        
+        .social-icon {
+            width: 40px;
+            height: 40px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 50%;
+            margin-right: 10px;
+            transition: all 0.3s ease;
+        }
+        
+        .social-icon:hover {
+            background: var(--primary);
+            transform: translateY(-3px);
+        }
+        
+        .scroll-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--primary);
+            color: white;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.2rem;
+            cursor: pointer;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+            z-index: 999;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        .scroll-top.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        
+        .scroll-top:hover {
+            background: var(--primary-dark);
+            transform: translateY(-3px);
+        }
+        
+        @media (max-width: 768px) {
+            .hero-section {
+                padding: 100px 0 60px;
+                text-align: center;
+            }
+            
+            .hero-content h1 {
+                font-size: 2rem;
+            }
+            
+            .hero-content p {
+                font-size: 1rem;
+            }
+            
+            .btn {
+                padding: 0.5rem 1.2rem;
+            }
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease, transform 0.6s ease;
+        }
+        
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body>
+    <nav class="navbar navbar-expand-lg navbar-light bg-white fixed-top">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <i class="fas fa-bolt me-2"></i>TopUpNow
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item">
+                        <a class="nav-link active" href="#home">Home</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#ewallet">E-Wallet</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#games">Games</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#services">Services</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="#contact">Contact</a>
+                    </li>
+                </ul>
+                <div class="ms-lg-3 mt-3 mt-lg-0">
+                    <a href="#" class="btn btn-outline-primary me-2">Game</a>
+                    <a href="#" class="btn btn-primary">E-Walet</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <section class="hero-section" id="home">
+        <canvas id="mainCanvas"></canvas>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-6 hero-content">
+                    <h1 class="fw-bold mb-4">Top Up Your E-Wallet & Game Credits</h1>
+                    <p class="lead mb-4">Instant processing, secure transactions, and the best prices for all your digital needs.</p>
+                    <div class="d-flex flex-wrap gap-3">
+                        <a href="#ewallet" class="btn btn-light btn-lg px-4">
+                            <i class="fas fa-wallet me-2"></i>E-Wallet
+                        </a>
+                        <a href="#games" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-gamepad me-2"></i>Games
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6 d-none d-lg-block">
+                    <img src="https://cdn-icons-png.flaticon.com/512/5065/5065589.png" alt="Top Up Illustration" class="img-fluid hero-img">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5" id="services">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title fw-bold d-inline-block">Why Choose Us?</h2>
+                <p class="text-muted">We provide the best service for your digital needs</p>
+            </div>
+            <div class="row g-4">
+                <div class="col-md-4 fade-in">
+                    <div class="service-card p-4 text-center">
+                        <div class="service-icon">
+                            <i class="fas fa-bolt"></i>
+                        </div>
+                        <h4>Instant Processing</h4>
+                        <p class="text-muted">Your top-up will be processed instantly after payment confirmation.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 fade-in">
+                    <div class="service-card p-4 text-center">
+                        <div class="service-icon">
+                            <i class="fas fa-shield-alt"></i>
+                        </div>
+                        <h4>Secure Payment</h4>
+                        <p class="text-muted">100% secure payment with various payment methods available.</p>
+                    </div>
+                </div>
+                <div class="col-md-4 fade-in">
+                    <div class="service-card p-4 text-center">
+                        <div class="service-icon">
+                            <i class="fas fa-headset"></i>
+                        </div>
+                        <h4>24/7 Support</h4>
+                        <p class="text-muted">Our customer service is ready to help you anytime.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-white" id="ewallet">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title fw-bold d-inline-block">Popular E-Wallets</h2>
+                <p class="text-muted">Top up your favorite e-wallets in seconds</p>
+            </div>
+            <div class="row g-4">
+
+                <div class="col-6 col-md-3 fade-in">
+                    <div class="game-card text-center p-3" onclick="openLink(this)" data-url="/ewalet/dana" style="cursor: pointer;">
+                        <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRBc-1aSeafCdLKsgAJlj-5NTZ3p_iRiFuAoQ&s" alt="DANA" class="img-fluid mb-3 game-img">
+                        <h5>DANA</h5>
+                    </div>
+                </div>
+
+            </div>
+            <div class="text-center mt-4">
+                <a href="#" class="btn btn-outline-primary">View All E-Wallets</a>
+            </div>
+        </div>
+    </section>
+
+    <section class="py-5 bg-white" id="ewallet">
+        <div class="container">
+            <div class="text-center mb-5">
+                <h2 class="section-title fw-bold d-inline-block">Popular Game</h2>
+                <p class="text-muted">Top up your favorite Games</p>
+            </div>
+            <div class="row g-4">
+
+                <div class="col-6 col-md-3 fade-in">
+                    <div class="game-card text-center p-3" onclick="openLink(this)" data-url="/game/free-fire" style="cursor: pointer;">
+                        <img src="https://s3.atlantic-pedia.co.id/static/1737352003_3a6c9e1ae23eb8ca086c.webp" alt="Free Fore" class="img-fluid mb-3 game-img">
+                        <h5>Free Fire</h5>
+                    </div>
+                </div>
+
+            </div>
+            <div class="text-center mt-4">
+                <a href="#" class="btn btn-outline-primary">View All E-Wallets</a>
+            </div>
+        </div>
+    </section>
+
+
+    <section class="py-5 cta-section">
+        <div class="cta-pattern"></div>
+        <div class="container">
+            <div class="row align-items-center">
+                <div class="col-lg-8">
+                    <h2 class="fw-bold mb-3">Ready to Top Up?</h2>
+                    <p class="lead mb-0">Join thousands of satisfied customers who trust us for their digital needs.</p>
+                </div>
+                <div class="col-lg-4 text-lg-end mt-4 mt-lg-0">
+                    <a href="#" class="btn btn-light btn-lg px-4">Get Started Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="py-5" id="contact">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-4 mb-4 mb-lg-0">
+                    <h5 class="fw-bold mb-3"><i class="fas fa-bolt me-2"></i>TopUpNow</h5>
+                    <p>The fastest and most secure platform for e-wallet and game credits top-up.</p>
+                    <div class="d-flex gap-3">
+                        <a href="#" class="social-icon"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="social-icon"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h5 class="fw-bold mb-3">Services</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">E-Wallet</a></li>
+                        <li><a href="#">Game Credits</a></li>
+                        <li><a href="#">Vouchers</a></li>
+                        <li><a href="#">Promotions</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h5 class="fw-bold mb-3">Company</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">About Us</a></li>
+                        <li><a href="#">Careers</a></li>
+                        <li><a href="#">Blog</a></li>
+                        <li><a href="#">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2 col-md-4 mb-4 mb-md-0 footer-links">
+                    <h5 class="fw-bold mb-3">Support</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#">Help Center</a></li>
+                        <li><a href="#">Terms</a></li>
+                        <li><a href="#">Privacy</a></li>
+                        <li><a href="#">FAQ</a></li>
+                    </ul>
+                </div>
+                <div class="col-lg-2">
+                    <h5 class="fw-bold mb-3">Download</h5>
+                    <a href="#" class="d-block mb-2">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/3/3c/Download_on_the_App_Store_Badge.svg/2560px-Download_on_the_App_Store_Badge.svg.png" alt="App Store" class="img-fluid">
+                    </a>
+                    <a href="#" class="d-block">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/78/Google_Play_Store_badge_EN.svg/2560px-Google_Play_Store_badge_EN.svg.png" alt="Play Store" class="img-fluid">
+                    </a>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="row">
+                <div class="col-md-6 text-center text-md-start">
+                    <p class="mb-0">© 2023 TopUpNow. All rights reserved.</p>
+                </div>
+                <div class="col-md-6 text-center text-md-end">
+                    <p class="mb-0">Accepted payment methods: <i class="fab fa-cc-visa mx-1"></i><i class="fab fa-cc-mastercard mx-1"></i><i class="fab fa-cc-paypal mx-1"></i></p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <div class="scroll-top">
+        <i class="fas fa-arrow-up"></i>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const canvas = document.getElementById('mainCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            function resizeCanvas() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            
+            window.addEventListener('resize', resizeCanvas);
+            resizeCanvas();
+            
+            const particles = [];
+            const particleCount = Math.floor(canvas.width * canvas.height / 8000);
+            
+            function Particle() {
+                this.x = Math.random() * canvas.width;
+                this.y = Math.random() * canvas.height;
+                this.size = Math.random() * 3 + 1;
+                this.speedX = Math.random() * 2 - 1;
+                this.speedY = Math.random() * 2 - 1;
+                this.color = `hsla(${Math.random() * 60 + 200}, 80%, 70%, ${Math.random() * 0.5 + 0.3})`;
+                
+                this.update = function() {
+                    this.x += this.speedX;
+                    this.y += this.speedY;
+                    
+                    if (this.x < 0 || this.x > canvas.width) this.speedX *= -1;
+                    if (this.y < 0 || this.y > canvas.height) this.speedY *= -1;
+                };
+                
+                this.draw = function() {
+                    ctx.beginPath();
+                    ctx.arc(this.x, this.y, this.size, 0, Math.PI * 2);
+                    ctx.fillStyle = this.color;
+                    ctx.fill();
+                };
+            }
+            
+            for (let i = 0; i < particleCount; i++) {
+                particles.push(new Particle());
+            }
+            
+            function connect() {
+                for (let a = 0; a < particles.length; a++) {
+                    for (let b = a; b < particles.length; b++) {
+                        const dx = particles[a].x - particles[b].x;
+                        const dy = particles[a].y - particles[b].y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        
+                        if (distance < 100) {
+                            ctx.strokeStyle = `hsla(250, 80%, 70%, ${1 - distance / 100})`;
+                            ctx.lineWidth = 0.5;
+                            ctx.beginPath();
+                            ctx.moveTo(particles[a].x, particles[a].y);
+                            ctx.lineTo(particles[b].x, particles[b].y);
+                            ctx.stroke();
+                        }
+                    }
+                }
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                for (let i = 0; i < particles.length; i++) {
+                    particles[i].update();
+                    particles[i].draw();
+                }
+                
+                connect();
+                requestAnimationFrame(animate);
+            }
+            
+            animate();
+            
+            window.addEventListener('scroll', function() {
+                const navbar = document.querySelector('.navbar');
+                const scrollTop = document.querySelector('.scroll-top');
+                
+                if (window.scrollY > 100) {
+                    navbar.classList.add('scrolled');
+                    scrollTop.classList.add('active');
+                } else {
+                    navbar.classList.remove('scrolled');
+                    scrollTop.classList.remove('active');
+                }
+            });
+            
+            document.querySelector('.scroll-top').addEventListener('click', function() {
+                window.scrollTo({
+                    top: 0,
+                    behavior: 'smooth'
+                });
+            });
+            
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            function checkFade() {
+                fadeElements.forEach(element => {
+                    const elementTop = element.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (elementTop < windowHeight - 100) {
+                        element.classList.add('visible');
+                    }
+                });
+            }
+            
+            window.addEventListener('scroll', checkFade);
+            window.addEventListener('load', checkFade);
+        });
+
+        function openLink(element) {
+            var url = element.getAttribute("data-url");
+            if (url) {
+                window.location.href = url;
+            }
+        }
+    </script>
+</body>
+</html>
