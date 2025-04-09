@@ -661,7 +661,7 @@ app.get('/', (req, res) => {
 });
 
 app.get('/ewalet/dana', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'dana.html'));
+    res.sendFile(path.join(__dirname, 'public', 'ewalet', 'dana.html'));
 });
 app.get('/game/free-fire', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'game', 'free-fire.html'));
